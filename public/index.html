@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StumbleBoss — Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="logo">
+      <i data-lucide="gamepad-2" class="logo-icon"></i>
+      <span class="logo-text">StumbleBoss</span>
+    </div>
+    <div class="header-right">
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Server Online
+      </div>
+      <button class="refresh-btn" id="refreshBtn" onclick="refreshData()">
+        <i data-lucide="refresh-cw"></i>
+        Atualizar
+      </button>
+    </div>
+  </header>
+
+  <div class="cards">
+    <div class="card card--blue">
+      <div class="card-icon"><i data-lucide="users"></i></div>
+      <div class="card-label">Online Agora</div>
+      <div class="card-value" id="val-online">--</div>
+      <div class="card-sub card-sub--up"><i data-lucide="trending-up"></i> ao vivo</div>
+    </div>
+    <div class="card card--cyan">
+      <div class="card-icon"><i data-lucide="bar-chart-2"></i></div>
+      <div class="card-label">Pico de Hoje</div>
+      <div class="card-value" id="val-peak">--</div>
+      <div class="card-sub">hoje</div>
+    </div>
+    <div class="card card--green">
+      <div class="card-icon"><i data-lucide="user-plus"></i></div>
+      <div class="card-label">Total de Jogadores</div>
+      <div class="card-value" id="val-total">--</div>
+      <div class="card-sub card-sub--up"><i data-lucide="trending-up"></i> total</div>
+    </div>
+    <div class="card card--red">
+      <div class="card-icon"><i data-lucide="user-x"></i></div>
+      <div class="card-label">Banidos</div>
+      <div class="card-value" id="val-banned">--</div>
+      <div class="card-sub card-sub--down"><i data-lucide="shield-off"></i> total</div>
+    </div>
+  </div>
+
+  <div class="bottom-grid">
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Histórico de Jogadores</span>
+        <div class="tabs">
+          <button class="tab tab--active" onclick="setRange('1h', this)">1H</button>
+          <button class="tab" onclick="setRange('6h', this)">6H</button>
+          <button class="tab" onclick="setRange('24h', this)">24H</button>
+          <button class="tab" onclick="setRange('7d', this)">7D</button>
+        </div>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="playerChart"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Server Info</span>
+        <span class="panel-sub">ao vivo</span>
+      </div>
+      <div class="info-list">
+        <div class="info-row">
+          <span class="info-key"><i data-lucide="cpu"></i> Node.js</span>
+          <span class="info-val info-val--accent" id="server-node">--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key"><i data-lucide="clock"></i> Uptime</span>
+          <span class="info-val" id="server-uptime">--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key"><i data-lucide="hard-drive"></i> Memory</span>
+          <span class="info-val" id="server-memory">--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key"><i data-lucide="activity"></i> CPU</span>
+          <span class="info-val info-val--green" id="server-cpu">--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key"><i data-lucide="wifi"></i> Ping</span>
+          <span class="info-val info-val--accent" id="server-ping">--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key"><i data-lucide="map-pin"></i> Região</span>
+          <span class="info-val" id="server-region">--</span>
+        </div>
+        <div class="info-row">
+          <span class="info-key"><i data-lucide="timer"></i> Atualizado</span>
+          <span class="info-val" id="clock-val">--:--:--</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="players-section">
+    <div class="section-header">
+      <span class="panel-title">Jogadores Recentes</span>
+      <span class="section-count" id="players-count">--</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Jogador</th>
+            <th>ID</th>
+            <th>IP</th>
+            <th>País / Região</th>
+            <th>Experiência</th>
+            <th>Último Login</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="players-tbody">
+          <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:40px">Carregando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<script src="dashboard.js"></script>
+</body>
+</html>
