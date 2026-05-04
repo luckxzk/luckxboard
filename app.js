@@ -5,10 +5,11 @@ const express  = require('express');
 const mongoose = require('mongoose');
 const path     = require('path');
 const os       = require('os');
+const cors     = require('cors');
 
-const cors = require('cors');
-app.use(cors());
-const app = express();
+const app = express(); // ✅ CRIA PRIMEIRO
+
+app.use(cors()); // ✅ USA DEPOIS
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -49,11 +50,9 @@ app.get('/api/stats', async (req, res) => {
       Player.countDocuments({ isBanned: true }),
     ]);
 
-    // Jogadores ativos na última hora
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
     const online = await Player.countDocuments({ lastLogin: { $gte: oneHourAgo } });
 
-    // Pico: jogadores ativos hoje
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
     const peak = await Player.countDocuments({ lastLogin: { $gte: startOfDay } });
@@ -70,6 +69,7 @@ app.get('/api/players', async (req, res) => {
       .sort({ lastLogin: -1 })
       .limit(20)
       .select('username id country region isBanned createdAt lastLogin skillRating experience crowns');
+
     res.json(players);
   } catch (err) {
     res.status(500).json({ error: err.message });
